@@ -10,6 +10,9 @@ To physically print your model, you need to export the entire 3D body.
 5. Resolution: **Fine**.
 6. Click Export.
 
+<img src="images/7.1.png" 
+     class="content-media">
+
 Below is an interactive preview of what a finished, exported 3D model looks like.
 
 <!-- Interactive 3D Model Placeholder -->

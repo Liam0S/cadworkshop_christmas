@@ -8,6 +8,5 @@ Instead of pulling a shape straight up (extruding), we can spin a 2D profile aro
 3. Click the **Revolve** tool.
 4. Select the face to revolve, then click the axis line.
 
-<div class="media-placeholder video">
-  <p>🎥 <strong>Video Placeholder:</strong> Screen recording showing a 2D half-profile of a cup being spun 360 degrees using the Revolve tool.</p>
-</div>
+<img src="images/5.1.png" 
+     class="content-media">

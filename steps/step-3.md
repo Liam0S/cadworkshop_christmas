@@ -8,6 +8,5 @@ Don't model the same feature twice. Use patterns to duplicate geometry evenly.
 
 Select your feature (e.g., the hole you just cut), select the Pattern tool from the top ribbon, pick your direction/axis, and enter the number of instances.
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot of the Circular Pattern dialog box open, showing 6 holes spaced evenly around a center point.</p>
-</div>
+<img src="images/3.1.png" 
+     class="content-media">

@@ -8,6 +8,5 @@ Laser cutters only read 2D vector paths. We can export any flat sketch or flat f
 3. Choose **DXF** format and **Version 2018**.
 4. Click Export to download your file.
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot showing the right-click menu over a flat face with "Export as DXF/DWG" highlighted.</p>
-</div>
+<img src="images/4.1.png" 
+     class="content-media">

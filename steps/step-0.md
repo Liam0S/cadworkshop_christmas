@@ -11,6 +11,8 @@ Before we model, we need to set up our workspace. OnShape runs entirely in your 
 2. Click **Create > Document** in the top left corner.
 3. Name your document "Workshop Practice".
 
-<div class="media-placeholder video">
-  <p>🎥 <strong>Video Placeholder:</strong> Screen recording showing the login process, creating a new document, and a quick tour of the Top/Front/Right planes.</p>
-</div>
+<img src="images/0.1.png" 
+     class="content-media">
+
+<img src="images/0.2.png" 
+     class="content-media">

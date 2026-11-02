@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OnShape CAD Workshop</title>
+    <link rel="stylesheet" href="style.css">
+    
+    <!-- Marked.js for parsing Markdown -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    
+    <!-- Google Model Viewer for 3D files -->
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>OnShape Workshop</h2>
+            <ul id="nav-list">
+                <li><a href="#step-0" class="active">Step 0: Setup</a></li>
+                <li><a href="#step-1">Step 1: Sketching</a></li>
+                <li><a href="#step-2">Step 2: Extrude & Cut</a></li>
+                <li><a href="#step-3">Step 3: Patterns</a></li>
+                <li><a href="#step-4">Step 4: DXF Export</a></li>
+                <li><a href="#step-5">Step 5: Revolving</a></li>
+                <li><a href="#step-6">Step 6: Custom Planes</a></li>
+                <li><a href="#step-7">Step 7: 3D Print Export</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Workspace -->
+        <main class="content">
+            <div id="step-content">Loading step content...</div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

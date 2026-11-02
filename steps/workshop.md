@@ -11,9 +11,11 @@ Before we model, we need to set up our workspace. OnShape runs entirely in your 
 2. Click **Create > Document** in the top left corner.
 3. Name your document "Workshop Practice".
 
-<div class="media-placeholder video">
-  <p>🎥 <strong>Video Placeholder:</strong> Screen recording showing the login process, creating a new document, and a quick tour of the Top/Front/Right planes.</p>
-</div>
+<img src="images/0.1.png" 
+     class="content-media">
+
+<img src="images/0.2.png" 
+     class="content-media">
 
 ---
 
@@ -26,13 +28,13 @@ Everything in CAD starts with a 2D sketch.
 4. Use the Line or Rectangle tool to draw a shape.
 5. Press **D** to use the Dimension tool and define your exact sizes. Black lines mean the sketch is fully constrained!
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot of a fully constrained (black lines) 2D sketch with visible dimensions.</p>
-</div>
+<img src="images/1.1.png" 
+     class="content-media">
 
 <div class="media-placeholder video">
   <p>🎥 <strong>Video Placeholder:</strong> Short clip showing drawing a rectangle, snapping it to the origin, and typing in dimensions.</p>
 </div>
+
 
 ---
 
@@ -45,9 +47,9 @@ Now we turn 2D into 3D by pulling the sketch into a solid block, or pushing it t
 4. **To Add:** Choose "New" or "Add", type a depth (e.g., 20mm), and hit the green check.
 5. **To Cut:** Sketch a circle on top of your new block, click Extrude, choose **Remove**, and set it to "Through All".
 
-<div class="media-placeholder video">
-  <p>🎥 <strong>Video Placeholder:</strong> Screen recording of extruding a base block, drawing a circle on its top face, and doing an extrude cut through it.</p>
-</div>
+<img src="images/2.1.png" 
+     class="content-media">
+
 
 ---
 
@@ -59,10 +61,9 @@ Don't model the same feature twice. Use patterns to duplicate geometry evenly.
 
 Select your feature (e.g., the hole you just cut), select the Pattern tool from the top ribbon, pick your direction/axis, and enter the number of instances.
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot of the Circular Pattern dialog box open, showing 6 holes spaced evenly around a center point.</p>
-</div>
-
+<img src="images/3.1.png" 
+     class="content-media">
+  
 ---
 
 ## Step 4: Exporting for Laser Cutting (DWG/DXF)
@@ -73,9 +74,8 @@ Laser cutters only read 2D vector paths. We can export any flat sketch or flat f
 3. Choose **DXF** format and **Version 2018**.
 4. Click Export to download your file.
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot showing the right-click menu over a flat face with "Export as DXF/DWG" highlighted.</p>
-</div>
+<img src="images/4.1.png" 
+     class="content-media">
 
 ---
 
@@ -87,9 +87,8 @@ Instead of pulling a shape straight up (extruding), we can spin a 2D profile aro
 3. Click the **Revolve** tool.
 4. Select the face to revolve, then click the axis line.
 
-<div class="media-placeholder video">
-  <p>🎥 <strong>Video Placeholder:</strong> Screen recording showing a 2D half-profile of a cup being spun 360 degrees using the Revolve tool.</p>
-</div>
+<img src="images/5.1.png" 
+     class="content-media">
 
 ---
 
@@ -99,9 +98,12 @@ You aren't limited to the default Top/Front/Right planes. You can sketch anywher
 1. **Face Sketching:** Click any flat face on your 3D model and click "Sketch" to draw directly on it.
 2. **Offset Planes:** Click the **Plane** tool, select a face or existing plane, and type a distance (e.g., 50mm) to create a new floating plane in mid-air. 
 
-<div class="media-placeholder image">
-  <p>🖼️ <strong>Image Placeholder:</strong> Screenshot showing an offset plane floating above the main body, ready for a new sketch.</p>
-</div>
+<img src="images/6.1.png" 
+     class="content-media">
+
+<img src="images/6.2.png" 
+     class="content-media">
+
 
 ---
 
@@ -115,6 +117,9 @@ To physically print your model, you need to export the entire 3D body.
 5. Resolution: **Fine**.
 6. Click Export.
 
+<img src="images/7.1.png" 
+     class="content-media">
+
 Below is an interactive preview of what a finished, exported 3D model looks like.
 
 <!-- Interactive 3D Model Placeholder -->
@@ -125,3 +130,5 @@ Below is an interactive preview of what a finished, exported 3D model looks like
   camera-controls 
   shadow-intensity="1">
 </model-viewer>
+
+

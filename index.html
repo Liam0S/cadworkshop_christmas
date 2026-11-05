@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<script type="importmap">
+{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.187.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.187.0/examples/jsm/"}}
+</script>
+<script type="module" src="./stl-preview.js"></script>
 <script src="./support.js"></script>
 </head>
 <body>
@@ -10,7 +14,6 @@
 <helmet>
 <link rel="stylesheet" href="_ds/industry-e51bcd70-f114-498d-8ca7-f559af1cc6f1/styles.css">
 <script src="_ds/industry-e51bcd70-f114-498d-8ca7-f559af1cc6f1/_ds_bundle.js"></script>
-<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
 <style>
 :root {
   --x-pine-950: oklch(0.19 0.018 160); --x-pine-900: oklch(0.23 0.022 160); --x-pine-800: oklch(0.29 0.028 160);
@@ -67,12 +70,31 @@ a:hover { color: var(--x-gold); }
         <span style="display: block;">Eight doors.</span>
         <span style="display: block; color: var(--x-gold);">One bauble on the tree.</span>
       </h1>
-      <p style="margin: 0; max-width: 56ch; font-size: 18px; line-height: 1.55; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">Welcome to the beginner CAD workshop. Today we are using OnShape, a cloud-based 3D modeling software, to design parts for 3D printing and laser cutting — a gift tag, a snowflake and a bauble, one advent door at a time.</p>
+      <p style="margin: 0; max-width: 56ch; font-size: 18px; line-height: 1.55; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">Welcome to the beginner CAD workshop. Today we are using OnShape, a cloud-based 3D modeling software, to design a snowflake for laser cutting and a bauble for 3D printing — one advent door at a time.</p>
       <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: center;">
         <a href="{{ continueHref }}" style="white-space: nowrap; display: inline-flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 28px; border-radius: 0; background: var(--x-red); color: var(--x-cream); text-decoration: none; font-weight: 600; font-size: 17px; box-shadow: inset 0 -3px 0 var(--x-red-dark);" style-hover="background: var(--x-red-dark); color: var(--x-cream);">{{ continueLabel }}
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
         <span style="white-space: nowrap; display: inline-flex; align-items: center; min-height: 52px; padding: 0 22px; border-radius: 0; border: 1px solid var(--x-pine-700); color: var(--x-mint); font-size: 15px;">{{ progressLabel }}</span>
       </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 16px; border: 1px solid var(--x-pine-700); background: color-mix(in oklch, var(--x-pine-950) 55%, transparent);">
+        <label for="idea-category" style="font-size: 14px; font-weight: 600; color: var(--x-gold);">Need inspiration?</label>
+        <select id="idea-category" value="{{ ideaCategory }}" onChange="{{ changeIdeaCategory }}" style="min-height: 40px; padding: 0 10px; background: var(--x-pine-800); color: var(--x-cream); border: 1px solid var(--x-pine-700); font: inherit;">
+          <option value="laser_cut">Laser cutting</option><option value="3D_printing">3D printing</option>
+        </select>
+        <button type="button" onClick="{{ pickIdea }}" style="min-height: 40px; padding: 0 16px; cursor: pointer; font: inherit; font-weight: 600; color: var(--x-pine-950); background: var(--x-gold); border: 0;">Show me an idea</button>
+      </div>
+      <sc-if value="{{ idea.visible }}" hint-placeholder-val="{{ false }}">
+        <div style="width: 100%; max-width: 520px; flex: none; box-sizing: border-box; padding: 18px; border: 1px solid var(--x-gold); background: var(--x-pine-800); display: flex; flex-direction: column; gap: 10px;">
+          <strong style="color: var(--x-gold);">{{ idea.categoryLabel }} idea</strong>
+          <div style="position: relative; width: 100%; height: 300px; flex: none; overflow: hidden; background: var(--x-pine-950);">
+            <sc-if value="{{ idea.src }}"><img data-fig-src="{{ idea.src }}" alt="{{ idea.alt }}" style="position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: contain; object-position: center;"></sc-if>
+            <sc-if value="{{ idea.loading }}"><span style="position: absolute; inset: auto 8px 8px; padding: 6px 10px; background: rgba(10,18,15,0.82); color: var(--x-cream); font-size: 13px;">{{ idea.loadingLabel }}</span></sc-if>
+          </div>
+          <span style="font-size: 13px; color: var(--x-mint);">{{ idea.filename }}</span>
+          <button type="button" onClick="{{ pickIdea }}" style="align-self: flex-start; padding: 8px 12px; cursor: pointer; font: inherit; background: transparent; color: var(--x-gold); border: 1px solid var(--x-gold);">Another idea</button>
+        </div>
+      </sc-if>
+      <sc-if value="{{ idea.message }}" hint-placeholder-val="{{ false }}"><p style="margin: 0; font-size: 14px; color: var(--x-gold);">{{ idea.message }}</p></sc-if>
     </div>
     <div style="flex: 1 1 240px; height: 340px; position: relative; display: flex; justify-content: center; gap: 28px; align-items: flex-start; margin-top: -120px;">
       <sc-for list="{{ heroBaubles }}" as="o" hint-placeholder-count="0">
@@ -114,7 +136,7 @@ a:hover { color: var(--x-gold); }
   <section style="padding: 0 0 96px; display: flex; flex-direction: column; gap: 28px;">
     <h2 style="margin: 0; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: 40px; line-height: 1;">What goes under the tree</h2>
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 20px;">
-      <sc-for list="{{ parts }}" as="p" hint-placeholder-count="3">
+      <sc-for list="{{ parts }}" as="p" hint-placeholder-count="2">
         <div style="position: relative; overflow: hidden; padding: 32px 26px 26px; border-radius: 0; background: {{ p.bg }}; color: {{ p.ink }}; display: flex; flex-direction: column; gap: 10px;">
           <div style="position: absolute; left: 0; right: 0; top: 0; height: 6px; background: repeating-linear-gradient(-45deg, var(--x-gold) 0 6px, var(--x-gold-dark) 6px 9px);"></div>
           
@@ -148,7 +170,7 @@ a:hover { color: var(--x-gold); }
 
   <article style="flex: 999 1 480px; min-width: 0; max-width: 780px; display: flex; flex-direction: column; gap: 32px;">
     <header style="display: flex; flex-direction: column; gap: 16px;">
-      <span style="align-self: flex-start; font-size: 13px; letter-spacing: 0.04em; font-weight: 600; padding: 5px 12px; border-radius: 0; background: var(--x-mint); color: var(--x-pine-950); font-feature-settings: 'tnum' 1;">Door {{ cur.num }} of 07 · {{ cur.short }}</span>
+      <span style="align-self: flex-start; font-size: 13px; letter-spacing: 0.04em; font-weight: 600; padding: 5px 12px; border-radius: 0; background: var(--x-mint); color: var(--x-pine-950); font-feature-settings: 'tnum' 1;">Door {{ cur.num }} of 08 · {{ cur.short }}</span>
       <h1 style="margin: 0; font-family: var(--font-heading); font-weight: var(--font-heading-weight); font-size: clamp(42px, 5.2vw, 68px); line-height: 1;">{{ cur.title }}</h1>
       <p style="margin: 0; font-size: 18px; line-height: 1.55; max-width: 60ch; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">{{ cur.lede }}</p>
     </header>
@@ -175,6 +197,16 @@ a:hover { color: var(--x-gold); }
     <sc-if value="{{ cur.note }}" hint-placeholder-val="{{ false }}">
       <p style="margin: 0; font-size: 17px; line-height: 1.55; max-width: 60ch; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">{{ cur.note }}</p>
     </sc-if>
+    <sc-if value="{{ cur.hasSubsections }}" hint-placeholder-val="{{ false }}">
+      <section style="display: flex; flex-direction: column; gap: 18px;">
+        <sc-for list="{{ cur.subsections }}" as="sub">
+          <div style="padding: 18px 20px; border-left: 3px solid var(--x-gold); background: var(--x-pine-800); display: flex; flex-direction: column; gap: 8px;">
+            <h2 style="margin: 0; font-family: var(--font-heading); font-size: 23px; color: var(--x-gold);">{{ sub.title }}</h2>
+            <p style="margin: 0; font-size: 16px; line-height: 1.55;">{{ sub.text }}</p>
+          </div>
+        </sc-for>
+      </section>
+    </sc-if>
 
     <sc-if value="{{ cur.hasImages }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ cur.images }}" as="img" hint-placeholder-count="0">
       <figure style="margin: 0; padding: 10px; border-radius: 0; background: var(--x-pine-800); border: 1px solid var(--x-pine-700);">
@@ -183,20 +215,12 @@ a:hover { color: var(--x-gold); }
       </figure>
     </sc-for></sc-if>
 
-    <sc-if value="{{ cur.video }}" hint-placeholder-val="{{ false }}">
-      <div style="aspect-ratio: 16 / 9; display: grid; place-items: center; padding: 24px; border-radius: 0; border: 2px dashed var(--x-pine-700); background: color-mix(in oklch, var(--x-pine-950) 60%, transparent);">
-        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; max-width: 44ch;">
-          <span style="width: 56px; height: 56px; border-radius: 0; display: grid; place-items: center; background: var(--x-red);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--x-cream)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="m16 13 5.223 3.482a.5.5 0 0 0 .777-.416V7.87a.5.5 0 0 0-.752-.432L16 10.5"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg></span>
-          <span style="font-size: 13px; font-weight: 600; color: var(--x-gold);">Video clip — coming soon</span>
-          <span style="font-size: 15px; line-height: 1.5; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">{{ cur.video }}</span>
-        </div>
-      </div>
-    </sc-if>
-
-    <sc-if value="{{ cur.model }}" hint-placeholder-val="{{ false }}">
-      <p style="margin: 0; font-size: 17px; line-height: 1.55; color: color-mix(in oklch, var(--x-cream) 85%, transparent);">Below is an interactive preview of what a finished, exported 3D model looks like.</p>
-      <div style="height: 420px; border-radius: 0; overflow: hidden; background: radial-gradient(circle at 50% 40%, var(--x-pine-700), var(--x-pine-950)); border: 1px solid var(--x-pine-700);">
-        <model-viewer src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" alt="3D CAD model preview" auto-rotate="" camera-controls="" shadow-intensity="1" style="width: 100%; height: 100%; background: transparent;"></model-viewer>
+    <sc-if value="{{ cur.stl }}" hint-placeholder-val="{{ false }}">
+      <div style="padding: 20px; border: 1px solid var(--x-gold); background: var(--x-pine-800); display: flex; flex-direction: column; gap: 10px;">
+        <h2 style="margin: 0; font-family: var(--font-heading); font-size: 24px;">Finished model · interactive STL preview</h2>
+        <p style="margin: 0;">Drag to rotate and use the mouse wheel or pinch to zoom.</p>
+        <stl-preview src="{{ cur.stl }}" aria-label="{{ cur.title }} interactive 3D model" style="display: block; width: 100%; height: 420px; overflow: hidden; background: radial-gradient(circle at 50% 40%, var(--x-pine-700), var(--x-pine-950)); border: 1px solid var(--x-pine-700);"></stl-preview>
+        <a href="{{ cur.stl }}" download style="align-self: flex-start; color: var(--x-mint); font-size: 14px;">{{ cur.stlLabel }}</a>
       </div>
     </sc-if>
 
@@ -217,32 +241,33 @@ a:hover { color: var(--x-gold); }
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;snow&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Festive&quot;}, &quot;snowDensity&quot;: {&quot;editor&quot;: &quot;range&quot;, &quot;default&quot;: 1, &quot;min&quot;: 0.3, &quot;max&quot;: 3, &quot;step&quot;: 0.1, &quot;tsType&quot;: &quot;number&quot;, &quot;section&quot;: &quot;Festive&quot;}, &quot;showBuilds&quot;: {&quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Festive&quot;}}">
 const STEPS = [
-  { short: 'Setup', title: 'OnShape setup and interface', lede: 'Before we model, we need to set up our workspace. OnShape runs entirely in your browser.',
-    items: ['Go to onshape.com and log in or create an educational/free account.', 'Click **Create > Document** in the top left corner.', 'Name your document "Workshop Practice".'],
-    images: ['0.1', '0.2'], buildTitle: 'Open the workshop', buildText: 'This document is your bench for the season. The tag, snowflake and bauble you make in the next seven doors all live here.' },
-  { short: 'Sketching', title: 'Sketching basics', lede: 'Everything in CAD starts with a 2D sketch.',
-    items: ['Select the **Top Plane**.', 'Click the **Sketch** button (Shift + S).', 'Press **N** on your keyboard to view the plane normally (flat).', 'Use the Line or Rectangle tool to draw a shape.', 'Press **D** to use the Dimension tool and define your exact sizes. Black lines mean the sketch is fully constrained!'],
-    images: ['1.1'], video: 'Short clip showing drawing a rectangle, snapping it to the origin, and typing in dimensions.',
-    buildTitle: 'Draw a gift tag', buildText: 'Make your rectangle 60 × 30 mm, snapped to the origin. That is the outline of a gift tag.' },
-  { short: 'Extrude & cut', title: 'Extruding and extrude cutting', lede: 'Now we turn 2D into 3D by pulling the sketch into a solid block, or pushing it through a solid to remove material.',
-    items: ['Finish your sketch (green checkmark).', 'Click **Extrude** (Shift + E).', 'Select your sketch profile.', '**To Add:** Choose "New" or "Add", type a depth (e.g., 20mm), and hit the green check.', '**To Cut:** Sketch a circle on top of your new block, click Extrude, choose **Remove**, and set it to "Through All".'],
-    images: ['2.1'], buildTitle: 'Give the tag a ribbon hole', buildText: 'Extrude the tag 3 mm thick, then cut a 4 mm circle through all near one end, where the ribbon goes.' },
-  { short: 'Patterns', title: 'Linear and circular patterns', lede: "Don't model the same feature twice. Use patterns to duplicate geometry evenly.",
-    items: ['**Linear Pattern:** Duplicates features along a straight edge.', '**Circular Pattern:** Duplicates features around a central axis (like a cylinder edge).'],
-    note: 'Select your feature (e.g., the hole you just cut), select the Pattern tool from the top ribbon, pick your direction/axis, and enter the number of instances.',
-    images: ['3.1'], buildTitle: 'Pattern a snowflake', buildText: 'Model one arm of a snowflake, then circular-pattern it six times around the centre. Every snowflake is different — yours just has to be symmetrical.' },
-  { short: 'DXF export', title: 'Exporting for laser cutting', lede: 'Laser cutters only read 2D vector paths. We can export any flat sketch or flat face directly to a laser-ready format (DWG/DXF).',
-    items: ['Right-click directly on the flat face or the 2D sketch in the feature tree.', 'Select **Export as DXF/DWG**.', 'Choose **DXF** format and **Version 2018**.', 'Click Export to download your file.'],
-    images: ['4.1'], buildTitle: 'Cut the snowflake', buildText: 'Export the snowflake face as DXF. Cut in thin acrylic or ply, it hangs in a window.' },
-  { short: 'Revolving', title: 'Revolving', lede: 'Instead of pulling a shape straight up (extruding), we can spin a 2D profile around a center line to make cylindrical objects like wheels, cups, or shafts.',
-    items: ["Draw half of your object's profile on the Front Plane.", 'Draw a solid line down the middle to act as the axis.', 'Click the **Revolve** tool.', 'Select the face to revolve, then click the axis line.'],
-    images: ['5.1', '5.2'], buildTitle: 'Spin a bauble', buildText: 'A half-circle spun around its straight edge is a sphere. The 60 mm profile in Fig. 5.1 is exactly that: your bauble.' },
-  { short: 'Custom planes', title: 'Custom sketch planes', lede: "You aren't limited to the default Top/Front/Right planes. You can sketch anywhere.",
-    items: ['**Face Sketching:** Click any flat face on your 3D model and click "Sketch" to draw directly on it.', '**Offset Planes:** Click the **Plane** tool, select a face or existing plane, and type a distance (e.g., 50mm) to create a new floating plane in mid-air.'],
-    images: ['6.1', '6.2'], buildTitle: 'Add the hanging loop', buildText: 'Offset a plane to the top of the bauble and sketch a small ring on it. Extrude it so the bauble can hang from a branch.' },
-  { short: '3D print export', title: 'Exporting for 3D printing', lede: 'To physically print your model, you need to export the entire 3D body.',
-    items: ['In the bottom left, right-click on your Part (e.g., "Part 1").', 'Select **Export**.', 'Format: **STL** (standard) or **STEP** (modern standard).', 'Units: **Millimeter**.', 'Resolution: **Fine**.', 'Click Export.'],
-    images: ['7.1'], model: true, buildTitle: 'Print it for the tree', buildText: 'Export the bauble as an STL at fine resolution. Print it before the 25th.' },
+  { short: 'Setup & units', title: 'OnShape setup, millimetres and planes', lede: 'Set up the document before drawing. Units and sketch planes affect every feature that follows.',
+    items: ['Create a document named “Workshop Practice”.', 'Open Document menu > Workspace units and choose **Millimeter (mm)** before modeling. A unit mismatch can make parts 25.4× too large or too small.', 'Sketches are attached to planes or planar faces. Use the **Top Plane** for a flat snowflake and a vertical plane for the bauble profile.', 'Planes set sketch orientation and provide references for dimensions, patterns, and exports.'],
+    images: ['0.1', '0.2'], buildTitle: 'Start the snowflake', buildText: 'Use one document for both projects. Set units to mm first.' },
+  { short: 'Sketch & import', title: 'Sketching and importing drawings', lede: 'Choose the right plane, draw a closed profile, and constrain it with dimensions.',
+    items: ['Select **Top Plane**, click **Sketch** (Shift + S), and press **N** to view it straight on.', 'Draw with Line, Rectangle, or Circle; use **D** to dimension. Fully constrained geometry turns black.', 'Use **Insert DXF/DWG** in a sketch to import a vector drawing. SVG import may require conversion to DXF depending on your workflow.', 'Check imported units and scale against a known dimension, then position and clean up the drawing.', 'Finish the sketch with the green checkmark.'],
+    images: ['1.1'], buildTitle: 'Lay out the snowflake', buildText: 'Sketch one snowflake arm on Top Plane, centred at the origin.',
+    subsections: [{ title: 'Add DXF/SVG drawings to a sketch', text: 'Import into a sketch on the intended plane, then check units, scale, positioning, and closed profiles before finishing.' }] },
+  { short: 'Build an arm', title: 'Create the snowflake arm', lede: 'Build one clean, symmetric arm. Circular patterns repeat it around the centre.',
+    items: ['Start a sketch on **Top Plane**; this determines the flat face that will be laser cut.', 'Draw a centreline from the origin and a branching arm profile.', 'Dimension the arm in **mm** and constrain it to the origin or construction geometry.', 'Close the outline and finish the sketch.'],
+    images: ['2.1'], buildTitle: 'Make one arm', buildText: 'Leave enough space between branches for a strong cut part.' },
+  { short: 'Circular patterns', title: 'Circular patterns of features', lede: 'Repeat a snowflake arm evenly around a centre axis.',
+    items: ['Select the arm feature or sketch entities and start **Circular pattern**.', 'Choose the centre axis or vertical sketch line through the origin.', 'Set **6 instances** over **360°** and check that the arms meet cleanly.', 'The same tool can pattern 3D features such as cuts or ribs around an axis.'],
+    images: ['3.1'], stl: 'assets/3d_models/snowflake_sample.STL', stlLabel: 'Download the sample snowflake STL', buildTitle: 'Finish the snowflake', buildText: 'Use the sample STL as a reference, then export your flat outline as DXF.',
+    subsections: [{ title: 'Circular patterns of features', text: 'Choose a feature, rotational axis, instance count, and angle. Six instances over 360° make a regular snowflake; inspect joins before export.' }] },
+  { short: 'DXF laser export', title: 'Export for laser cutting', lede: 'Laser cutters need clean 2D vector paths at a known scale.',
+    items: ['Confirm the sketch plane and dimensions use **mm**.', 'Right-click the flat sketch or face and choose **Export as DXF/DWG**.', 'Choose **DXF** and verify export units are millimetres.', 'Open the file in your laser software and verify a known dimension before cutting.', 'Use material and machine settings approved for your laser cutter.'],
+    images: ['4.1'], buildTitle: 'Cut the snowflake', buildText: 'Export the flat snowflake as DXF and check scale before cutting.' },
+  { short: 'Revolve the bauble', title: 'Create the bauble body', lede: 'Revolve turns a 2D profile around an axis to make a round 3D body.',
+    items: ['Choose **Front Plane** and start a sketch for the side profile.', 'Draw a half-round profile beside a vertical centreline and close it to the line.', 'Dimension the bauble in **mm**; 60 mm is a useful starting diameter.', 'Use **Revolve**, select the profile region, then select the centreline axis.', 'Inspect the full 360° body for gaps or unwanted flat faces.'],
+    images: ['5.1', '5.2'], buildTitle: 'Spin the bauble', buildText: 'A half-circle revolved around its straight edge forms the body.' },
+  { short: 'Bauble top & helix', title: 'Model the bauble top and explore Helix', lede: 'Use reference planes to position a strong cap and hanging loop for printing.',
+    items: ['Create an **offset plane** at the bauble top, or sketch on a planar top face. Plane placement controls cap and loop position.', 'Sketch a centred ring for the neck/cap; size it in **mm**.', 'Extrude or revolve the cap to join the sphere, then add a loop with a string hole.', 'Make sure the cap joins the sphere as one solid; avoid thin fragile walls.', 'Advanced: use **Helix** around an axis for a thread or decorative spiral. Define pitch and turns, and check for self-intersection.'],
+    images: ['6.1', '6.2'], subsections: [{ title: 'Bauble top: shape and placement', text: 'Use a plane perpendicular to the bauble axis. Build a short neck or rounded cap, then add a reinforced loop with a string hole. Keep the top fused to the sphere.' }, { title: 'Complex feature: Helix', text: 'Helix creates threads and spirals. Define its axis, start edge, pitch, and turns; sweep a profile only after the basic bauble is complete.' }],
+    buildTitle: 'Add a printable hanger', buildText: 'Make a cap and loop that join the sphere as one solid.' },
+  { short: '3D print export', title: 'Export and print the bauble', lede: 'Export the finished body as STL and preserve millimetre scale for slicing.',
+    items: ['Right-click the bauble part and choose **Export**.', 'Choose **STL**, set units to **Millimeter (mm)**, and select **Fine** resolution.', 'In your slicer, confirm it is about 60 mm across.', 'Orient it to support the hanger; inspect layers, loop hole, and wall thickness.'],
+    images: ['7.1'], stl: 'assets/3d_models/bauble_sample.STL', stlLabel: 'Download the sample bauble STL', buildTitle: 'Print the bauble', buildText: 'Verify mm units and inspect the bauble top in your slicer.' },
 ];
 const BALL = {
   red: { ball: 'radial-gradient(circle at 32% 28%, rgba(255,255,255,0.7) 0 6%, transparent 7%), radial-gradient(circle at 38% 35%, oklch(0.70 0.16 25), oklch(0.54 0.18 25) 55%, oklch(0.38 0.13 25))', ink: 'var(--x-cream)' },
@@ -259,16 +284,15 @@ const GARLAND = [0, 1, 2, 3].map(i => {
 const HERO = [{ k: 'gold', len: 130, size: 52 }, { k: 'red', len: 60, size: 84 }, { k: 'mint', len: 170, size: 44 }].map((o, i) => ({
   len: o.len + 'px', size: o.size + 'px', cap: Math.round(o.size * 0.34) + 'px', ball: BALL[o.k].ball, dur: (4.4 + i * 0.7) + 's', delay: (-i * 1.1) + 's' }));
 const PARTS = [
-  { doors: '01–02', name: 'Gift tag', desc: 'A 60 × 30 mm tag, 3 mm thick, with a hole for the ribbon.', out: 'Sketch · Extrude · Cut', bg: 'var(--x-red)', ink: 'var(--x-cream)' },
-  { doors: '03–04', name: 'Snowflake', desc: 'One arm patterned six times, exported flat for the laser cutter.', out: 'Pattern · DXF', bg: 'var(--x-pine-700)', ink: 'var(--x-cream)' },
-  { doors: '05–07', name: 'Bauble', desc: 'A revolved 60 mm sphere with a hanging loop, printed in time for the tree.', out: 'Revolve · Plane · STL', bg: 'var(--x-pine-800)', ink: 'var(--x-cream)' },
+  { doors: '02–05', name: 'Snowflake', desc: 'One arm patterned six times, exported flat for the laser cutter.', out: 'Sketch · Pattern · DXF', bg: 'var(--x-pine-700)', ink: 'var(--x-cream)' },
+  { doors: '06–08', name: 'Bauble', desc: 'A revolved body with a printable top and hanging loop.', out: 'Revolve · Plane · STL', bg: 'var(--x-pine-800)', ink: 'var(--x-cream)' },
 ];
 const KEY = 'cadxmas-done';
 const parse = (s) => s.split('**').map((t, i) => ({ t, strong: i % 2 === 1, plain: i % 2 === 0 })).filter(p => p.t);
 const pad = (n) => String(n).padStart(2, '0');
 
 class Component extends DCLogic {
-  state = { route: 'workshop', done: {} };
+  state = { route: 'workshop', done: {}, ideaCategory: 'laser_cut', idea: { src: '', visible: false, loading: false, message: '' } };
   snowRef = React.createRef();
 
   componentDidMount() {
@@ -285,6 +309,40 @@ class Component extends DCLogic {
       const s = el.getAttribute('data-fig-src');
       if (s && !s.includes('{{') && el.getAttribute('src') !== s) el.setAttribute('src', s);
     });
+  }
+  changeIdeaCategory(event) {
+    this.ideaRequestId = (this.ideaRequestId || 0) + 1;
+    this.setState({ ideaCategory: event.target.value, idea: { ...this.state.idea, loading: false, message: '' } });
+  }
+  async pickIdea() {
+    const requestId = this.ideaRequestId = (this.ideaRequestId || 0) + 1;
+    const category = this.state.ideaCategory || 'laser_cut';
+    const categoryLabel = category === 'laser_cut' ? 'Laser cutting' : '3D printing';
+    const prefix = category === 'laser_cut' ? 'laser_cut' : '3D-print';
+    const candidates = Array.from({ length: 500 }, (_, i) => i + 1);
+    for (let i = candidates.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1)); [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+    }
+    const previousIdea = this.state.idea;
+    this.setState({ idea: { ...previousIdea, visible: true, loading: true, loadingLabel: previousIdea.src ? 'Choosing another idea…' : 'Finding an idea…', message: '' } });
+    const hasImage = (src) => new Promise(resolve => {
+      const image = new Image(); image.onload = () => resolve(true); image.onerror = () => resolve(false); image.src = src;
+    });
+    for (let offset = 0; offset < 120; offset += 12) {
+      const batch = candidates.slice(offset, offset + 12);
+      const found = (await Promise.all(batch.map(async number => {
+        const filename = prefix + ' (' + number + ').png';
+        const src = 'assets/images/idea_gallery/' + category + '/' + encodeURIComponent(filename);
+        return await hasImage(src) ? { filename, src } : null;
+      }))).filter(Boolean);
+      if (requestId !== this.ideaRequestId) return;
+      if (found.length) {
+        const result = found[Math.floor(Math.random() * found.length)];
+        this.setState({ idea: { src: result.src, filename: result.filename, categoryLabel, alt: categoryLabel + ' project idea', visible: true, loading: false, message: '' } });
+        return;
+      }
+    }
+    if (requestId === this.ideaRequestId) this.setState({ idea: { ...this.state.idea, loading: false, message: 'Could not find an idea image. Check that the selected folder contains numbered PNGs such as ' + prefix + ' (1).png.' } });
   }
   componentWillUnmount() {
     window.removeEventListener('hashchange', this.onHash);
@@ -327,38 +385,42 @@ class Component extends DCLogic {
   }
   renderVals() {
     const { route, done } = this.state;
-    const m = /^step-(\d)$/.exec(route);
-    const idx = m ? Math.min(+m[1], STEPS.length - 1) : -1;
+    const m = /^step-(\d+)$/.exec(route);
+    const routeNumber = m ? Number(m[1]) : 0;
+    const idx = routeNumber >= 1 && routeNumber <= STEPS.length ? routeNumber - 1 : -1;
     const steps = STEPS.map((s, i) => ({
-      ...s, num: pad(i), href: '#step-' + i, done: !!done[i], ...BALL[CYCLE[i % 4]],
+      ...s, num: pad(i + 1), href: '#step-' + (i + 1), done: !!done[i], ...BALL[CYCLE[i % 4]],
       doorBg: done[i] ? 'var(--x-pine-700)' : 'var(--x-pine-800)',
       railBg: i === idx ? 'var(--x-cream)' : 'transparent',
       railColor: i === idx ? 'var(--x-pine-950)' : 'var(--x-cream)',
       railWeight: i === idx ? 600 : 400,
     }));
-    const firstOpen = STEPS.findIndex((_, i) => !done[i]);
+      const firstOpen = STEPS.findIndex((_, i) => !done[i]);
     const doneCount = STEPS.filter((_, i) => done[i]).length;
     const now = new Date(); let xmas = new Date(now.getFullYear(), 11, 25);
     if (now > xmas && now.toDateString() !== xmas.toDateString()) xmas = new Date(now.getFullYear() + 1, 11, 25);
     const days = Math.ceil((xmas - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 864e5);
     const cs = idx >= 0 ? steps[idx] : steps[0];
-    const cur = { ...cs, items: cs.items.map((t, i) => ({ n: i + 1, parts: parse(t) })), note: cs.note || '', video: cs.video || '', model: !!cs.model, hasImages: !!(cs.images && cs.images.length),
-      images: (cs.images || []).map(f => ({ src: 'images/' + f + '.png', fig: f, alt: cs.title + ' — figure ' + f })) };
+    const cur = { ...cs, items: cs.items.map((t, i) => ({ n: i + 1, parts: parse(t) })), note: cs.note || '', hasImages: !!(cs.images && cs.images.length),
+      images: (cs.images || []).map(f => ({ src: 'assets/images/' + f + '.png', fig: f, alt: cs.title + ' — figure ' + f })),
+      subsections: cs.subsections || [], hasSubsections: !!(cs.subsections && cs.subsections.length), stl: cs.stl || '', stlLabel: cs.stlLabel || '' };
     return {
       snowRef: this.snowRef, garland: GARLAND, heroBaubles: HERO,
       isHome: idx < 0, isStep: idx >= 0, steps, cur, parts: PARTS,
       showBuilds: this.props.showBuilds ?? true,
       countdown: days === 0 ? 'Merry Christmas!' : days + (days === 1 ? ' sleep' : ' sleeps') + ' till Christmas',
-      continueHref: '#step-' + (firstOpen < 0 ? 0 : firstOpen),
-      continueLabel: firstOpen < 0 ? 'Start again' : doneCount === 0 ? 'Open door 00' : 'Open door ' + pad(firstOpen),
+      continueHref: '#step-' + (firstOpen < 0 ? 1 : firstOpen + 1),
+      continueLabel: firstOpen < 0 ? 'Start again' : doneCount === 0 ? 'Open door 01' : 'Open door ' + pad(firstOpen + 1),
       progressLabel: doneCount + ' of ' + STEPS.length + ' doors opened',
       toggleDone: () => this.toggle(idx),
       doneLabel: done[idx] ? 'Door opened' : 'Mark door as opened',
       doneBg: done[idx] ? 'var(--x-gold)' : 'transparent', doneInk: done[idx] ? 'var(--x-pine-950)' : 'var(--x-gold)',
-      prevHref: idx > 0 ? '#step-' + (idx - 1) : '',
-      prevLabel: idx > 0 ? 'Door ' + pad(idx - 1) : '',
-      nextHref: idx < STEPS.length - 1 ? '#step-' + (idx + 1) : '#workshop',
-      nextLabel: idx < STEPS.length - 1 ? 'Door ' + pad(idx + 1) + ' · ' + STEPS[idx + 1].short : 'Back to the board',
+      prevHref: idx > 0 ? '#step-' + idx : '',
+      prevLabel: idx > 0 ? 'Door ' + pad(idx) : '',
+      nextHref: idx < STEPS.length - 1 ? '#step-' + (idx + 2) : '#workshop',
+      nextLabel: idx < STEPS.length - 1 ? 'Door ' + pad(idx + 2) + ' · ' + STEPS[idx + 1].short : 'Back to the board',
+      ideaCategory: this.state.ideaCategory, idea: this.state.idea,
+      changeIdeaCategory: (event) => this.changeIdeaCategory(event), pickIdea: () => this.pickIdea(),
     };
   }
 }
